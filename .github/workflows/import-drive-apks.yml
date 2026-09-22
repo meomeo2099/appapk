@@ -42,10 +42,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release view apk-files >/dev/null 2>&1 ||           gh release create apk-files --title "APK Downloads" --notes "APK files imported from Google Drive."
+          gh release view apk-files --repo meomeo2099/appapk >/dev/null 2>&1 || gh release create apk-files --repo meomeo2099/appapk --title "APK Downloads" --notes "APK files imported from Google Drive."
 
       - name: Upload APKs to release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release upload apk-files             "apk-release/Youtube Vanced .apk"             "apk-release/Microg Vanced.apk"             "apk-release/google-files.apk"             "apk-release/google-chrome.apk"             "apk-release/Youtube-goc.apk"             --clobber
+          gh release upload apk-files --repo meomeo2099/appapk "apk-release/Youtube Vanced .apk" "apk-release/Microg Vanced.apk" "apk-release/google-files.apk" "apk-release/google-chrome.apk" "apk-release/Youtube-goc.apk" --clobber
