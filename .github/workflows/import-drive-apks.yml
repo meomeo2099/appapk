@@ -1,0 +1,51 @@
+name: Import APKs from Google Drive
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/import-drive-apks.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install gdown
+        run: python -m pip install --quiet gdown
+
+      - name: Download APKs from Google Drive
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p apk-release
+          gdown "https://drive.google.com/uc?id=18aFqQhPjn0SimgQ-0HzSkCO7CfTNOvsu" -O "apk-release/Youtube Vanced .apk"
+          gdown "https://drive.google.com/uc?id=1bHXKBSRiDmErn0iJoTCe-OR2PBKW7hux" -O "apk-release/Microg Vanced.apk"
+          gdown "https://drive.google.com/uc?id=1r8hlJ_La018pH-ALWX1kYpbik21cGblX" -O "apk-release/google-files.apk"
+          gdown "https://drive.google.com/uc?id=1PoRx9fmQzcahai674qZq07JvgkCOPSuD" -O "apk-release/google-chrome.apk"
+          gdown "https://drive.google.com/uc?id=1Zkv9liIpCaDmyLFtzoD2T1s4HH8AEVxz" -O "apk-release/Youtube-goc.apk"
+
+      - name: Verify APK files
+        shell: bash
+        run: |
+          set -euo pipefail
+          ls -lh apk-release
+          test -s "apk-release/Youtube Vanced .apk"
+          test -s "apk-release/Microg Vanced.apk"
+          test -s "apk-release/google-files.apk"
+          test -s "apk-release/google-chrome.apk"
+          test -s "apk-release/Youtube-goc.apk"
+
+      - name: Create release if needed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view apk-files >/dev/null 2>&1 ||           gh release create apk-files --title "APK Downloads" --notes "APK files imported from Google Drive."
+
+      - name: Upload APKs to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload apk-files             "apk-release/Youtube Vanced .apk"             "apk-release/Microg Vanced.apk"             "apk-release/google-files.apk"             "apk-release/google-chrome.apk"             "apk-release/Youtube-goc.apk"             --clobber
