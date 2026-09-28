@@ -26,6 +26,7 @@ jobs:
           gdown "https://drive.google.com/uc?id=1r8hlJ_La018pH-ALWX1kYpbik21cGblX" -O "apk-release/google-files.apk"
           gdown "https://drive.google.com/uc?id=1PoRx9fmQzcahai674qZq07JvgkCOPSuD" -O "apk-release/google-chrome.apk"
           gdown "https://drive.google.com/uc?id=1Zkv9liIpCaDmyLFtzoD2T1s4HH8AEVxz" -O "apk-release/Youtube-goc.apk"
+          gdown "https://drive.google.com/uc?id=191jthMESQRwnelc2Jk51ruKB-uSEHX7F" -O "apk-release/settings_native.apk"
 
       - name: Verify APK files
         shell: bash
@@ -37,6 +38,7 @@ jobs:
           test -s "apk-release/google-files.apk"
           test -s "apk-release/google-chrome.apk"
           test -s "apk-release/Youtube-goc.apk"
+          test -s "apk-release/settings_native.apk"
 
       - name: Create release if needed
         env:
@@ -48,4 +50,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release upload apk-files --repo meomeo2099/appapk "apk-release/Youtube Vanced .apk" "apk-release/Microg Vanced.apk" "apk-release/google-files.apk" "apk-release/google-chrome.apk" "apk-release/Youtube-goc.apk" --clobber
+          gh release upload apk-files --repo meomeo2099/appapk "apk-release/Youtube Vanced .apk" "apk-release/Microg Vanced.apk" "apk-release/google-files.apk" "apk-release/google-chrome.apk" "apk-release/Youtube-goc.apk" "apk-release/settings_native.apk" --clobber
